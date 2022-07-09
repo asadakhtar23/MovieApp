@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk AndroidSdk.compile
+
+    defaultConfig {
+        applicationId App.id
+        minSdk AndroidSdk.min
+        targetSdk AndroidSdk.target
+        versionCode Versions.versionCode
+        versionName Versions.versionName
+
+        testInstrumentationRunner TestLib.junitRunner
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+}
+
+dependencies {
+
+    implementation (AndroidSdk.appcompat)
+    implementation (AndroidSdk.material)
+    implementation (AndroidSdk.constraintLayout)
+    implementation (AndroidSdk.lifecycleViewModel)
+    implementation (AndroidSdk.activityKtx)
+    implementation (AndroidSdk.fragmentKtx)
+
+    testImplementation (TestLib.junit)
+    androidTestImplementation (TestLib.extJunit)
+    androidTestImplementation (TestLib.espresso)
+
+}
