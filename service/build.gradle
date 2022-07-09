@@ -1,20 +1,18 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
 
 android {
-    compileSdk AndroidSdk.compile
+    compileSdkVersion 31
 
     defaultConfig {
-        applicationId App.id
-        minSdk AndroidSdk.min
-        targetSdk AndroidSdk.target
-        versionCode Versions.versionCode
-        versionName Versions.versionName
+        minSdkVersion 21
+        targetSdkVersion 31
 
-        testInstrumentationRunner TestLib.junitRunner
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -30,23 +28,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-        dataBinding true
-    }
 }
 
 dependencies {
-
-    implementation project(path: ':service')
-    implementation project(path: ':core')
-
-    implementation (AndroidSdk.appcompat)
     implementation (AndroidSdk.material)
-    implementation (AndroidSdk.constraintLayout)
-    implementation (AndroidSdk.lifecycleViewModel)
-    implementation (AndroidSdk.activityKtx)
-    implementation (AndroidSdk.fragmentKtx)
+    implementation project(path: ':core')
+    implementation project(path: ':network')
 
     implementation(DI.hiltAndroid)
     kapt(DI.hiltAndroidCompiler)
@@ -56,5 +43,4 @@ dependencies {
     testImplementation (TestLib.junit)
     androidTestImplementation (TestLib.extJunit)
     androidTestImplementation (TestLib.espresso)
-
 }
