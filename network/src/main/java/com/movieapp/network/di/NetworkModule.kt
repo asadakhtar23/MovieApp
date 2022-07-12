@@ -46,12 +46,6 @@ class NetworkModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
-//
-//    @Singleton
-//    @Provides
-//    fun provideMovieNetwork(movieApi: MovieApi): MovieNetwork {
-//        return MovieNetwork(movieApi)
-//    }
 
     @Singleton
     @Provides
