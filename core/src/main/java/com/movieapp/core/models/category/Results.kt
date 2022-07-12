@@ -15,6 +15,6 @@ data class Results (
     @SerializedName("release_date") var releaseDate: String?= null,
     @SerializedName("title" ) var title: String?= null,
     @SerializedName("video" ) var video: Boolean? = null,
-    @SerializedName("vote_average") var voteAverage: Int? = null,
+    @SerializedName("vote_average") var voteAverage: Double? = null,
     @SerializedName("vote_count") var voteCount: Int? = null
 )

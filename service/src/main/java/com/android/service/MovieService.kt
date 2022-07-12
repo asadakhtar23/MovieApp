@@ -24,7 +24,7 @@ class MovieService @Inject constructor(private val movieNetwork: MovieNetwork): 
 
     override fun getMoviesByCategory(category: String): Flow<NetworkResult<MovieCategoryResponse>> {
         return flow {
-            emit(safeApiCall { movieNetwork.getMoviesByCategory(category, 1) })
+            emit(safeApiCall { movieNetwork.getMoviesByCategory(category) })
         }.flowOn(Dispatchers.IO)
     }
 }

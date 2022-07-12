@@ -34,12 +34,12 @@ dependencies {
     implementation (AndroidSdk.material)
     implementation project(path: ':core')
 
-    implementation (Retrofit2.retrofit)
-    implementation (Retrofit2.converterGson)
-    implementation (Retrofit2.gson)
-    implementation (Retrofit2.converterScalars)
-    implementation (Retrofit2.loggingInterceptor)
-    implementation (Retrofit2.okhttp)
+    api (Retrofit2.retrofit)
+    api (Retrofit2.converterGson)
+    api (Retrofit2.gson)
+    api (Retrofit2.converterScalars)
+    api (Retrofit2.loggingInterceptor)
+    api (Retrofit2.okhttp)
 
     implementation(DI.hiltAndroid)
     kapt(DI.hiltAndroidCompiler)

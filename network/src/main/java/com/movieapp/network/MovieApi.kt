@@ -7,9 +7,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface MovieApi {
-    @GET("/movie/{categoryId}")
+    @GET("movie/{categoryId}")
     suspend fun getMovieByCategory(@Path("categoryId") categoryId: String): Response<MovieCategoryResponse>
 
-    @GET("/movie/{movieId}}")
+    @GET("movie/{movieId}}")
     suspend fun getMovieDetails(@Path("movieId") movieId: Int): Response<MovieDetailResponse>
 }

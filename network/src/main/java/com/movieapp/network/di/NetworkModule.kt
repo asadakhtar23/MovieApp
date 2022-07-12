@@ -2,6 +2,8 @@ package com.movieapp.network.di
 
 import com.movieapp.core.Constants.Companion.BASE_URL
 import com.movieapp.network.MovieApi
+import com.movieapp.network.MovieNetwork
+import com.movieapp.network.interceptor.MovieApiInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,13 +16,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class NetworkModule {
+class NetworkModule {
 
     @Singleton
     @Provides
     fun provideHttpClient(): OkHttpClient {
         return OkHttpClient
             .Builder()
+            .addInterceptor(MovieApiInterceptor())
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
             .build()
@@ -43,6 +46,12 @@ abstract class NetworkModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
+//
+//    @Singleton
+//    @Provides
+//    fun provideMovieNetwork(movieApi: MovieApi): MovieNetwork {
+//        return MovieNetwork(movieApi)
+//    }
 
     @Singleton
     @Provides

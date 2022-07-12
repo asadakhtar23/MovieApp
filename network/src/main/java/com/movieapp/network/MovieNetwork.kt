@@ -11,7 +11,7 @@ class MovieNetwork @Inject constructor(private val movieApi: MovieApi): IMovieNe
         return movieApi.getMovieDetails(movieId)
     }
 
-    override suspend fun getMoviesByCategory(category: String, page: Int):Response<MovieCategoryResponse> {
+    override suspend fun getMoviesByCategory(category: String):Response<MovieCategoryResponse> {
         return movieApi.getMovieByCategory(category)
     }
 }

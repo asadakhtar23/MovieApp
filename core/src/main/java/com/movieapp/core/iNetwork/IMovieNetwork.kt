@@ -6,5 +6,5 @@ import retrofit2.Response
 
 interface IMovieNetwork {
     suspend fun getMovieDetails(movieId: Int): Response<MovieDetailResponse>
-    suspend fun getMoviesByCategory(category: String, page: Int): Response<MovieCategoryResponse>
+    suspend fun getMoviesByCategory(category: String): Response<MovieCategoryResponse>
 }

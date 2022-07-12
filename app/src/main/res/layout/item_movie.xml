@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="results" type="com.movieapp.core.models.category.Results"/>
+        <variable name="constants" type="com.movieapp.core.Constants"/>
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:id="@+id/ivMovieImage"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                app:loadImage="@{constants.IMAGE_BASE_URL + results.posterPath}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvMovieName"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@{results.title}"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/ivMovieImage"
+                app:layout_constraintStart_toStartOf="@+id/ivMovieImage"
+                app:layout_constraintTop_toBottomOf="@+id/ivMovieImage" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

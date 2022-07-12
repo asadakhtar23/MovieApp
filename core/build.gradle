@@ -32,6 +32,8 @@ android {
 
 dependencies {
     implementation (AndroidSdk.material)
+    implementation (AndroidSdk.lifecycleViewModel)
+    implementation (AndroidSdk.activityKtx)
 
     implementation (Retrofit2.retrofit)
     implementation (Retrofit2.converterGson)

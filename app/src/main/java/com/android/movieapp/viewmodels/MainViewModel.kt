@@ -1,28 +1,136 @@
 package com.android.movieapp.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.movieapp.adapters.ItemEventsListener
+import com.android.movieapp.bloc.events.CategoryEvent
+import com.android.movieapp.bloc.events.MovieDetailsEvent
+import com.android.movieapp.bloc.states.CategoryState
+import com.android.movieapp.bloc.states.MovieDetailsStates
+import com.movieapp.core.models.app.Category
 import com.android.service.MovieService
-import com.movieapp.core.models.category.MovieCategoryResponse
+import com.movieapp.core.Categories
 import com.movieapp.core.models.NetworkResult
+import com.movieapp.core.models.category.Results
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val movieService: MovieService): ViewModel()  {
+class MainViewModel @Inject constructor(private val movieService: MovieService): ViewModel(), ItemEventsListener  {
 
-    private val _response: MutableLiveData<NetworkResult<MovieCategoryResponse>> = MutableLiveData()
+    private val _responseMoviesByCategory: MutableLiveData<List<Category>> = MutableLiveData()
 
-    val response: LiveData<NetworkResult<MovieCategoryResponse>> = _response
+    val responseMoviesByCategory: LiveData<List<Category>> = _responseMoviesByCategory
 
-    fun fetchMoviesByCategory(category: String) = viewModelScope.launch {
-        movieService.getMoviesByCategory(category).collect { values ->
-            _response.value = values
+    private val _responseMovieDetails: MutableLiveData<MovieDetailsStates> = MutableLiveData()
+
+    val responseMovieDetails: LiveData<MovieDetailsStates> = _responseMovieDetails
+
+    var movieList = mutableListOf<Results>()
+
+    private fun fetchMoviesByCategory(category: Category) = viewModelScope.launch {
+        movieService.getMoviesByCategory(category.slug).collect { values ->
+            when (values) {
+                is NetworkResult.Success -> {
+                    movieList = values.data?.results!!
+                    Log.e("response", values.data.toString())
+                }
+                is NetworkResult.Error -> {
+                    Log.e("Error", values.message!!)
+                }
+                is NetworkResult.Loading -> {
+
+                }
+            }
+
         }
     }
+
+    fun initCategoryList() {
+        val categoryList = mutableListOf<Category>()
+
+        categoryList.add(
+            Category("Latest Movies", Categories.LATEST_MOVIE, mutableListOf(),
+            loadInitially = true,
+            isExpandable = true
+        )
+        )
+        categoryList.add(
+            Category("Popular Movies", Categories.POPULAR_MOVIE, mutableListOf(),
+            loadInitially = true,
+            isExpandable = true
+        )
+        )
+        categoryList.add(
+            Category("Top Rated Movies", Categories.TOP_RATED_MOVIE, mutableListOf(),
+            loadInitially = false,
+            isExpandable = false
+        )
+        )
+        categoryList.add(
+            Category("Upcoming Movies", Categories.UPCOMING_MOVIE, mutableListOf(),
+            loadInitially = false,
+            isExpandable = false
+        )
+        )
+
+        _responseMoviesByCategory.value = categoryList
+    }
+
+    fun fetchMovieDetails(movieId: Int) = viewModelScope.launch {
+        movieService.getMovieDetails(movieId).collect { values ->
+
+            when (values) {
+                is NetworkResult.Success -> {
+                    _responseMovieDetails.value = MovieDetailsStates.MovieDetailsFetched(values.data!!)
+                    Log.e("response", values.data.toString())
+                }
+                is NetworkResult.Error -> {
+                    _responseMovieDetails.value = MovieDetailsStates.Error
+                }
+                is NetworkResult.Loading -> {
+                    _responseMovieDetails.value = MovieDetailsStates.Loading
+                }
+            }
+        }
+    }
+
+    override fun onCategoryEventListener(
+        position: Int,
+        category: Category,
+        categoryEvent: CategoryEvent,
+        state: (CategoryState) -> Unit
+    ) {
+        when (categoryEvent) {
+            is CategoryEvent.Expand -> {
+                state(CategoryState.Loading)
+                viewModelScope.launch {
+                    fetchMoviesByCategory(category).join()
+                    state(CategoryState.CategoryDataFetched(movieList))
+                }
+            }
+            is CategoryEvent.Collapse -> {
+
+            }
+        }
+    }
+
+    override fun onMovieDetailsEventListener(
+        position: Int,
+        movieId: Int,
+        movieDetailsEvent: MovieDetailsEvent
+    ) {
+        when (movieDetailsEvent) {
+            is MovieDetailsEvent.MovieDetails -> {
+                fetchMovieDetails(movieId)
+            }
+        }
+    }
+
 
 }

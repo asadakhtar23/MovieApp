@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MovieDetailResponse (
     @SerializedName("adult" ) var adult : Boolean? = null,
     @SerializedName("backdrop_path" ) var backdropPath: String?= null,
-    @SerializedName("belongs_to_collection" ) var belongsToCollection : String?= null,
+    @SerializedName("belongs_to_collection" ) var belongsToCollection : BelongsToCollection? = BelongsToCollection(),
     @SerializedName("budget") var budget: Int? = null,
     @SerializedName("genres") var genres: ArrayList<Genres> = arrayListOf(),
     @SerializedName("homepage") var homepage: String?= null,
@@ -26,6 +26,6 @@ data class MovieDetailResponse (
     @SerializedName("tagline" ) var tagline : String?= null,
     @SerializedName("title" ) var title : String?= null,
     @SerializedName("video" ) var video : Boolean? = null,
-    @SerializedName("vote_average") var voteAverage : Int? = null,
+    @SerializedName("vote_average") var voteAverage : Double?= null,
     @SerializedName("vote_count") var voteCount : Int? = null
 )

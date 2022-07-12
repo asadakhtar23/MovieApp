@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MovieApp</string>
+    <string name="title">Title:</string>
+    <string name="tagline">Tagline:</string>
+    <string name="status">Status:</string>
+    <string name="release_date">Release Date:</string>
+    <string name="budget">Budget:</string>
+    <string name="vote_average">Vote Average:</string>
+    <string name="vote_count">Vote Count:</string>
+    <string name="overview">Overview:</string>
 </resources>

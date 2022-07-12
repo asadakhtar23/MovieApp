@@ -22,14 +22,16 @@ object Versions {
 
     const val gson = "2.8.2"
 
-    const val retrofit = "2.5.0"
-    const val converterGson = "2.3.0"
-    const val converterScalars = "2.3.0"
+    const val retrofit = "2.9.0"
+    const val converterGson = "2.9.0"
+    const val converterScalars = "2.9.0"
 
-    const val loggingInterceptor = "3.11.0"
-    const val okhttp = "3.11.0"
+    const val loggingInterceptor = "4.9.1"
+    const val okhttp = "4.0.0"
 
     const val hiltAndroid = "2.40"
+
+    const val glide = "4.10.0"
 
 }
 
@@ -49,6 +51,10 @@ object AndroidSdk {
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
     const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
+}
+
+object ImageLoader {
+    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
 }
 
 object DI {
