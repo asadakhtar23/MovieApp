@@ -1,15 +1,16 @@
 package com.movieapp.network.interceptor
 
+import com.movieapp.network.MyApp
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class MovieApiInterceptor : Interceptor {
 
-    val tmdbParam = "api_key"
+    private val tmdbParam = "api_key"
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        val tmdb = "003fcbd729a751c39f31ecd676801be7"
+        val tmdb = MyApp().getMyApp()
         val requestBuilder = originalRequest.newBuilder()
 
         if (originalRequest.method == "GET") {

@@ -9,6 +9,8 @@ object Versions {
     const val appcompat = "1.2.0"
     const val constraintLayout = "2.0.4"
 
+    const val ndkVersion = "23.0.7599858"
+
     const val gradlePlugin = "4.2.2"
 
     const val junit = "4.+"
