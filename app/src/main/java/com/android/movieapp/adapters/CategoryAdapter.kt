@@ -14,10 +14,7 @@ import com.android.movieapp.databinding.ItemCategoryBinding
 import com.movieapp.core.models.app.Category
 import com.movieapp.core.models.category.Results
 
-
 class CategoryAdapter(var data: List<Category>, private val itemEventsListener: ItemEventsListener): RecyclerView.Adapter<CategoryAdapter.ItemViewHolder>() {
-
-    //class ItemViewHolder(binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
     class ItemViewHolder(val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -48,6 +45,7 @@ class CategoryAdapter(var data: List<Category>, private val itemEventsListener: 
 
         if(this.data[position].loadInitially) {
             this.data[position].loadInitially = false
+
             itemEventsListener.onCategoryEventListener(position,data,CategoryEvent.Expand) { state ->
                 handleStates(state, holder)
             }
@@ -58,11 +56,17 @@ class CategoryAdapter(var data: List<Category>, private val itemEventsListener: 
         holder.binding.llMain.setOnClickListener {
             data.isExpandable = !data.isExpandable
 
-            itemEventsListener.onCategoryEventListener(position,data,CategoryEvent.Expand) { state ->
+            movieList = mutableListOf()
+
+            holder.binding.progressBar.visibility = View.VISIBLE
+
+            val currentState = if(data.isExpandable) CategoryEvent.Expand else CategoryEvent.Collapse
+
+            itemEventsListener.onCategoryEventListener(position, data, currentState) { state ->
                 handleStates(state, holder)
             }
 
-            handleUI(isExpandable, holder)
+            handleUI(data.isExpandable, holder)
         }
 
     }
@@ -116,30 +120,6 @@ class CategoryAdapter(var data: List<Category>, private val itemEventsListener: 
             }
         }
     }
-
-//    private fun handleListPopulation(
-//        isExpandable: Boolean,
-//        position: Int,
-//        holder: ItemViewHolder
-//    ) {
-//
-//    }
-
-//    private fun handleState(
-//        position: Int,
-//        holder: ItemViewHolder,
-//        event: CategoryEvent
-//    ) {
-//
-//
-//    }
-
-//    private fun initMovieList(
-//        state: CategoryState.CategoryDataFetched,
-//        holder: ItemViewHolder
-//    ) {
-//
-//    }
 
     override fun getItemCount(): Int {
         return data.size

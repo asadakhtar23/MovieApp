@@ -14,13 +14,13 @@ import com.android.movieapp.databinding.ActivityMainBinding
 import com.android.movieapp.databinding.BottomSheetBinding
 import com.android.movieapp.viewmodels.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.movieapp.core.models.NetworkResult
+import com.google.android.material.snackbar.Snackbar
 import com.movieapp.core.models.details.MovieDetailResponse
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -29,9 +29,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         binding.rvCategory.layoutManager = LinearLayoutManager(this)
-
+        binding.clProgress.visibility = View.GONE
         setUpOnDataChangeObserver()
         mainViewModel.initCategoryList()
     }
@@ -45,16 +44,22 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.responseMovieDetails.observe(this) { state ->
             when (state) {
                 is MovieDetailsStates.MovieDetailsFetched -> {
+                    binding.clProgress.visibility = View.GONE
                     showBottomSheetDialog(state.data)
                     Log.e("response", state.data.toString())
                 }
                 is MovieDetailsStates.Error -> {
-                    Log.e("Error", "MovieDetailsStates.Error")
+                    binding.clProgress.visibility = View.GONE
+                    showSnackBar(binding.clRoot, state.message)
                 }
                 is MovieDetailsStates.Loading -> {
-
+                    binding.clProgress.visibility = View.VISIBLE
                 }
             }
+        }
+
+        mainViewModel.showErrorMessage.observe(this) { message ->
+            showSnackBar(binding.clRoot, message)
         }
     }
 
@@ -78,7 +83,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         bindingSheet.ivVideoPlayer.setOnClickListener {
-
+            bottomSheet.hide()
+            showSnackBar(binding.clRoot, movieDetailResponse.title!!)
         }
 
         bottomSheet.show()

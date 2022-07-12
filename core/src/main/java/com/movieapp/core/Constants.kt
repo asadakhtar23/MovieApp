@@ -12,4 +12,6 @@ object Categories {
     const val POPULAR_MOVIE = "popular"
     const val TOP_RATED_MOVIE = "top_rated"
     const val UPCOMING_MOVIE = "upcoming"
+
+    const val FETCH_LATEST_MOVIE_TIME_INTERVAL: Long = 30000
 }
